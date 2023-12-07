@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:http="http://www.mulesoft.org/schema/mule/http" xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd">
+	<configuration-properties doc:name="Configuration properties" doc:id="5a7fc46c-1ecb-4547-8df5-eda792499067" file="properties.yaml" />
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="33e66d23-32f7-4fb5-8d80-f9eacc49b578" >
+		<http:listener-connection host="${http.host}" port="${http.port}" />
+	</http:listener-config>
+	<flow name="deploy-app-cloudhub1-flow" doc:id="36893311-331f-46c3-89d1-d2d7417a56db" >
+		<http:listener doc:name="GET: /hello" doc:id="a47120c5-b7ab-49f4-94fe-10b9a54be763" config-ref="HTTP_Listener_config" path="${http.path}"/>
+		<logger level="INFO" doc:name="Start Logger" doc:id="91865f24-3e44-40ee-8df0-44b7b48033f7" message='#[flow.name ++ " started."]'/>
+		<set-payload value='#[%dw 2.0&#10;output application/json&#10;---&#10;{&#10;	"message" : "Hello world from new app."&#10;}]' doc:name="Set Payload" doc:id="2754ff46-71ac-4d2a-a81d-98e94466a335" />
+		<logger level="INFO" doc:name="End Logger" doc:id="f07ce402-5827-43f4-8bbc-d2c92f1ea9d2" message='#[flow.name ++ " ended."]'/>
+	</flow>
+</mule>
